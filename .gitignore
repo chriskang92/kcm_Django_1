@@ -37,4 +37,3 @@ node_modules/
 
 # Docker 관련 파일 제외 (사용할 경우)
 docker-compose.override.yml
-movies/apps.py
