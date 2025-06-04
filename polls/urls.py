@@ -18,4 +18,8 @@ urlpatterns = [
     path("<int:pk>/", views.DetailView.as_view(), name="detail"),
     path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
     path("<int:question_id>/vote/", views.vote, name="vote"),
-]
+    #CRUD 기능을 추가한 경우
+    path("create/", views.QuestionCreateView.as_view(), name="question_create"),
+    path("<int:pk>/update/",views.QuestionUpdateView.as_view(), name="question_update"),
+    path("<int:pk>/delete/",views.QuestionDeleteView.as_view(), name="question_delete"),
+]   

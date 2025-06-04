@@ -6,7 +6,12 @@
 {% endblock %}
 
 <h1>최근 질문</h1>
+
 {% block content %}
+<a href="{% url 'polls:question_create'%}">글생성</a> 
+
+</a>
+
 {% if latest_question_list %}
   <ul>
     {% for question in latest_question_list %}

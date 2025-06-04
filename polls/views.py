@@ -82,3 +82,18 @@ def vote(request, question_id):
         selected_choice.votes = F("votes") + 1 #f는 필드 / votes 필드를 참조해서 +1 하란 의미
         selected_choice.save() 
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
+from django.urls import reverse_lazy
+
+class QuestionCreateView(generic.CreateView):
+    model = Question # 1. 질문 및 날짜 생성 필요
+    fields = ["question_text", "pub_date"]  # 2. 입력 필드 설정
+    template_name = "polls/question_form.html"  # 3. 템플릿 설정
+    success_url = reverse_lazy("polls:index")  # 4. 성공 후 리다이렉트 URL 설정
+    
+class QuestionUpdateView(generic.UpdateView):
+    pass
+
+
+class QuestionDeleteView(generic.DeleteView):
+    pass
