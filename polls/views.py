@@ -3,28 +3,82 @@ from django.http import HttpResponse
 from .models import Question, Choice
 from django.shortcuts import get_object_or_404
 
+# class 기반)
+from django.db.models import F
+from django.urls import reverse
+from django.views import generic
+from django.http import HttpResponseRedirect
+
 # index(최신글 list)
-def index(request):
+#def index(request):
     # return HttpResponse("Hello, world. You're at the polls index."
 
-    latest_question_list = Question.objects.order_by("-pub_date")[:5] #- pub_date는 최신순으로 정렬
+#    latest_question_list = Question.objects.order_by("-pub_date")[:5] #- pub_date는 최신순으로 정렬
     # latest_question_list = Question.objects.all() # 전체 조회 
     # latest_question_list = Question.objects.filter(question_text__contains="Python") # question_text에 "Python"이 포함된 질문 조회
     # latest_question_list = Question.objects.filter(pub_date__year=2023) # 2023년에 게시된 질문 조회
     # latest_question_list = Question.objects.filter(pub_date__year=2023, pub_date__month=10) # 2023년 10월에 게시된 질문 조회
     # latest_question_list = Question.objects.filter(pub_date__year=2023, pub_date__month=10, pub_date__day=1) # 2023년 10월 1일에 게시된 질문 조회
     # latest_question_list = Question.objects.exclude(question_text__contains="Python") # question_text에 "Python"이 포함되지 않은 질문 조회
-    context = {"latest_question_list": latest_question_list}#index.html에서 사용할 변수
-    return render(request, "polls/index.html", context)
+#    context = {"latest_question_list": latest_question_list}#index.html에서 사용할 변수
+#    return render(request, "polls/index.html", context)
 
 # detail(상세조회)
-def detail(request, question_id):
-	question = get_object_or_404(Question, pk=question_id)
-	return render(request, "polls/detail.html", {"question": question})
+#def detail(request, question_id):
+#	question = get_object_or_404(Question, pk=question_id)
+#	return render(request, "polls/detail.html", {"question": question})
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", {"question": question})
+#def detail(request, question_id):
+#    try:
+#        question = Question.objects.get(pk=question_id)
+#    except Question.DoesNotExist:
+#        raise Http404("Question does not exist")
+#    return render(request, "polls/detail.html", {"question": question})
 
+#def results(request, question_id):
+#    question = get_object_or_404(Question, pk=question_id)
+#    return render(request, "polls/results.html", {"question": question})
+
+#def vote(request, question_id):
+#    return HttpResponse(f"You're voting on question {question_id}.")
+
+# class-based views로 하는 경우(아래) / 위는 function-based views.
+
+# 메인 페이지 (질문 목록)
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_question_list"
+
+    def get_queryset(self):
+        return Question.objects.order_by("-pub_date")[:5]
+
+# 질문 상세 페이지
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+    context_object_name = "question"
+
+# 결과 페이지
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
+    context_object_name = "question"
+
+# 투표 처리 로직
 def vote(request, question_id):
-    return HttpResponse(f"You're voting on question {question_id}.")
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST["choice"])
+    except (KeyError, Choice.DoesNotExist):
+        return render(
+            request,
+            "polls/detail.html",
+            {
+                "question": question,
+                "error_message":"You didn't select a choice.",
+            },
+        )
+    else:
+        selected_choice.votes = F("votes") + 1 #f는 필드 / votes 필드를 참조해서 +1 하란 의미
+        selected_choice.save() 
+        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
