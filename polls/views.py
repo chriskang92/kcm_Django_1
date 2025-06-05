@@ -85,15 +85,20 @@ def vote(request, question_id):
 
 from django.urls import reverse_lazy
 
-class QuestionCreateView(generic.CreateView):
+class QuestionCreateView(generic.CreateView): #생성하기
     model = Question # 1. 질문 및 날짜 생성 필요
-    fields = ["question_text", "pub_date"]  # 2. 입력 필드 설정
+    fields = ["question_text", "pub_date"]  # 2. 입력 필드 설정 
     template_name = "polls/question_form.html"  # 3. 템플릿 설정
     success_url = reverse_lazy("polls:index")  # 4. 성공 후 리다이렉트 URL 설정
     
-class QuestionUpdateView(generic.UpdateView):
-    pass
-
+class QuestionUpdateView(generic.UpdateView): #상세보기 및 수정하기
+    model = Question  # 1. 질문 모델 지정
+    fields = ["question_text", "pub_date"]  # 2. 수정할 필드 설정
+    template_name = "polls/question_form.html"  # 3. 템플릿 설정
+    success_url = reverse_lazy("polls:index")  # 4. 성공 후 리다이렉트 URL 설정
 
 class QuestionDeleteView(generic.DeleteView):
-    pass
+    model = Question  # 1. 질문 모델 지정
+    #fields = ["question_text", "pub_date"]  # 2. 삭제를 할 부분으로 fields 필요 없음
+    template_name = "polls/question_form_delete.html"  # 3. 템플릿 설정
+    success_url = reverse_lazy("polls:index")  # 4. 성공 후 리다이렉트 URL 설정
