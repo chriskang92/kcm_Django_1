@@ -4,6 +4,7 @@ from .models import Question, Choice
 from django.shortcuts import get_object_or_404
 
 # class 기반)
+from django.utils import timezone
 from django.db.models import F
 from django.urls import reverse
 from django.views import generic
@@ -50,7 +51,8 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        return Question.objects.order_by("-pub_date")[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
+
 
 # 질문 상세 페이지
 class DetailView(generic.DetailView):
@@ -58,11 +60,18 @@ class DetailView(generic.DetailView):
     template_name = "polls/detail.html"
     context_object_name = "question"
 
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
 # 결과 페이지
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
     context_object_name = "question"
+
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.now())
+    
 
 # 투표 처리 로직
 def vote(request, question_id):
@@ -84,6 +93,8 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
 from django.urls import reverse_lazy
+
+#CRUD(Create, Read, Update, Delete) 뷰 클래스
 
 class QuestionCreateView(generic.CreateView): #생성하기
     model = Question # 1. 질문 및 날짜 생성 필요
