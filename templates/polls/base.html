@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  {% include "polls/head.html" %}
+</head>
+<body>
+  {% include "polls/header.html" %}
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  {% include "polls/footer.html" %}
+</body>
+</html>

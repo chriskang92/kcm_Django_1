@@ -4,7 +4,8 @@
 {% block title %}{{ question.question_text }}{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'polls/detail.css' %}">
+<link rel="stylesheet" href="{% static 'polls/css/detail.css' %}">
+<!--head.html에 넣었으므로 모두 적용되니 위에 내용 삭제. -->
 
 <div class="detail-container">
   <h2 class="question-title">{{ question.question_text }}</h2>

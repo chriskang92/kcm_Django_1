@@ -1,0 +1,45 @@
+<!--질문 입력을 위한 input이 필요 ; 박스 앞에 뭘 적어야하는지에 대한 내용이 필요-->>
+<!--날짜 입력을 위한 input이 필요-->
+<!--try error-->
+<!--제출(확인): form tag가 필요-->
+
+{% extends "polls/base.html" %} {% block title %} 질문 작성/수정 {% endblock %}
+
+{% block content %}
+
+<h2>질문 작성/수정</h2>
+
+<form method="post">
+    <div class="form-container">
+{% csrf_token %}
+
+<!--아래 긴 내용을 한 번에 쓰는 법:  {{ form.as_p }} 이거면 해결-->
+
+<p>
+   <label for="{{ form.question_text.id_for_label }}">질문:</label><br>
+   <input type="text"
+      name="{{ form.question_text.name }}"
+      id="{{ form.question_text.id_for_label }}"
+      value="{{ form.question_text.value|default_if_none:'' }}"
+      placeholder="예: 당신이 좋아하는 음식은 무엇인가요?"
+      required> <!--선택사항 안써도 무관-->
+   {{ form.question_text.errors }}
+  </p>
+
+  <p>
+   <label for="{{ form.pub_date.id_for_label }}">게시 날짜와 시간:</label><br>
+   <input type="datetime-local"
+      name="{{ form.pub_date.name }}"
+      id="{{ form.pub_date.id_for_label }}"
+      value="{{ form.pub_date.value|default_if_none:'' }}"
+      placeholder="예: 2025-06-06T10:00"
+      required>
+   {{ form.pub_date.errors }}
+  </p>
+
+  <button type="submit" class="submit-btn">저장</button>
+ </div>
+</form>
+{% endblock %}
+
+
