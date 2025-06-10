@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls',  # Custom app for the polls application 앱이 만들어진 걸 알려주는 기능
+    'accounts', # accounts 앱 추가
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+LOGIN_REDIRECT_URL = "/polls/" # 로그인후 이동할 페이지
+LOGOUT_REDIRECT_URL = "/accounts/login/" # 로그아웃후 이동할 페이지

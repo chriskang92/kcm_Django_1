@@ -5,6 +5,17 @@
     <nav class="site-nav">
       <ul>
         <li><a href="{% url 'polls:index' %}">HOME</a></li>
+          {% if user.is_authenticated %}
+        <li>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="nav-button">로그아웃</button> <!--로그인 상태가 됐으므로 로그아웃 칸으로의 이동이 필요-->
+          </form>
+        </li>
+          {% else %}
+        <li><a href="{% url 'login' %}">로그인</a></li>
+        {% endif %}
+        <li><a href="{% url 'signup' %}">회원가입</a></li>
       </ul>
     </nav>
   </div>

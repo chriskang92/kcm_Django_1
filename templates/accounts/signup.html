@@ -1,0 +1,11 @@
+{% extends "polls/base.html" %} <!--공통 레이아웃 사용하기 위해 기본 구조를 base.html에 만들어두고, 
+회원가입 페이지 같은 다른 템플릿에서는 공통 부분을 그대로 상속하고 content만 바꾸는 방식-->
+{% load static %} <!--CSS 연동하려고-->
+{% block content %}
+<h2>회원가입</h2>
+<form method="post" class="auth-form">
+ {% csrf_token %} {{ form.as_p }}
+ <button type="submit">가입</button>
+</form>
+<a href="{% url 'login' %}">이미 계정이 있으신가요?</a>
+{% endblock %}
