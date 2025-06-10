@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Question, Choice
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 
 # class 기반)
 from django.utils import timezone
@@ -113,3 +114,9 @@ class QuestionDeleteView(generic.DeleteView):
     #fields = ["question_text", "pub_date"]  # 2. 삭제를 할 부분으로 fields 필요 없음
     template_name = "polls/question_form_delete.html"  # 3. 템플릿 설정
     success_url = reverse_lazy("polls:index")  # 4. 성공 후 리다이렉트 URL 설정
+
+#test용_part 8_0
+def question_list(request):
+    #questions = Question.objects.all()  #쿼리 과부화 유발
+    questions = Question.objects.annotate(num_choices=Count('choice'))
+    return render(request, 'polls/question_list.html', {'questions': questions}) #쿼리 과부화

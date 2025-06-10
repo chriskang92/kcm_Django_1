@@ -36,12 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # 정적파일관리
     'polls',  # Custom app for the polls application 앱이 만들어진 걸 알려주는 기능
     'accounts', # accounts 앱 추가
+    'debug_toolbar',       
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,3 +131,7 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = "/polls/" # 로그인후 이동할 페이지
 LOGOUT_REDIRECT_URL = "/accounts/login/" # 로그아웃후 이동할 페이지
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

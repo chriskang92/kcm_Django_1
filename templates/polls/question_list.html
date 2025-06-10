@@ -1,0 +1,15 @@
+<!-- templates/polls/questions.html -->
+{% extends "polls/base.html" %}
+{% block content %}
+
+<h1>질문 목록</h1>
+<ul>
+  {% for question in questions %}
+  <li>
+    {{ question.question_text }} (선택지 수: {{question.num_choices }})
+  </li>
+  {% empty %}
+  <li>아직 등록된 질문이 없습니다.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

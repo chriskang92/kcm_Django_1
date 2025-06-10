@@ -22,4 +22,6 @@ urlpatterns = [
     path("create/", views.QuestionCreateView.as_view(), name="question_create"),
     path("<int:pk>/update/",views.QuestionUpdateView.as_view(), name="question_update"),
     path("<int:pk>/delete/",views.QuestionDeleteView.as_view(), name="question_delete"),
+    # 질문 목록을 보여주는 뷰(test용_part 8_0)
+    path('questions/', views.question_list, name='question_list'), #127.0.0.1:80000/polls/questions/ 형태로 접근 가능
 ]   
