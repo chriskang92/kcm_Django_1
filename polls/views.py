@@ -119,4 +119,4 @@ class QuestionDeleteView(generic.DeleteView):
 def question_list(request):
     #questions = Question.objects.all()  #쿼리 과부화 유발
     questions = Question.objects.annotate(num_choices=Count('choice'))
-    return render(request, 'polls/question_list.html', {'questions': questions}) #쿼리 과부화
+    return render(request, 'polls/question_list.html', {'questions': questions}) 
